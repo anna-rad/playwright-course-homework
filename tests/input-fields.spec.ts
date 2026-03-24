@@ -19,13 +19,16 @@ test('Update pet type', async ({page}) => {
   await expect(editPetTypePage.heading).toBeVisible();
   await editPetTypePage.nameInput.clear();
   await editPetTypePage.nameInput.fill('rabbit');
+  await editPetTypePage.updateButton.scrollIntoViewIfNeeded();
   await editPetTypePage.updateButton.click();
-  await expect(petTypesPage.rows.first()).toHaveText('rabbit');
+  const rowWithRabbit = petTypesPage.page.locator('tbody tr', { hasText: 'rabbit' });
+  await expect(rowWithRabbit).toBeVisible();
   await petTypesPage.clickEditButtonByPetType('rabbit');
   await editPetTypePage.nameInput.clear();
   await editPetTypePage.nameInput.fill('cat');
   await editPetTypePage.updateButton.click();
-  await expect(petTypesPage.rows.first()).toHaveText('cat');
+  const rowWithCat = petTypesPage.page.locator('tbody tr', { hasText: 'cat' });
+  await expect(rowWithCat).toBeVisible();
 });
 
 test('Cancel pet type update', async ({page}) => {

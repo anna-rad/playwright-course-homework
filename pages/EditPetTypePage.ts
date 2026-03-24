@@ -14,7 +14,7 @@ export class EditPetTypePage {
     this.page = page;
 
     this.heading = page.getByRole('heading', { name: 'Edit Pet Type' });
-    this.nameInput = page.getByLabel('Name');
+    this.nameInput = page.locator('#name');
     this.updateButton = page.getByRole('button', { name: 'Update' });
     this.cancelButton = page.getByRole('button', { name: 'Cancel' });
     this.nameInputValidationMessage = this.nameInput.locator('..').getByText('Name is required');

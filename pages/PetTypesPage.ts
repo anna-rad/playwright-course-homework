@@ -11,7 +11,7 @@ export class PetTypesPage {
     this.page = page;
 
     this.heading = page.getByRole('heading', { name: 'Pet Types' });
-    this.rows = page.getByRole('row');
+    this.rows = page.locator('tbody tr');
   }
 
   // Actions
