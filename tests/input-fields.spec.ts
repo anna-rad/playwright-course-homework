@@ -1,59 +1,44 @@
 import { test, expect } from '@playwright/test';
-import { NavigationBar } from '../pages/navigationBar';
-import { PetTypesPage } from '../pages/PetTypesPage';
-import { EditPetTypePage } from '../pages/EditPetTypePage';
 
 test.beforeEach( async({page}) => {
-  const navigationBar = new NavigationBar(page); 
-  const petTypesPage = new PetTypesPage(page); 
   await page.goto('/');
-  await expect(navigationBar.petTypesNavItem).toBeVisible();
-  await navigationBar.petTypesNavItem.click(); 
-  await expect(petTypesPage.heading).toBeVisible();
+  await expect(page.getByRole('link', { name: 'PET TYPES' })).toBeVisible();
+  await (page.getByRole('link', { name: 'PET TYPES' })).click(); 
+  await expect(page.getByRole('heading')).toHaveText('Pet Types');
 })
 
 test('Update pet type', async ({page}) => {
-  const petTypesPage = new PetTypesPage(page);
-  const editPetTypePage = new EditPetTypePage(page);
-  await petTypesPage.clickEditButtonByPetType('cat');
-  await expect(editPetTypePage.heading).toBeVisible();
-  await editPetTypePage.nameInput.clear();
-  await editPetTypePage.nameInput.fill('rabbit');
-  await editPetTypePage.updateButton.scrollIntoViewIfNeeded();
-  await editPetTypePage.updateButton.click();
-  const rowWithRabbit = petTypesPage.page.locator('tbody tr', { hasText: 'rabbit' });
-  await expect(rowWithRabbit).toBeVisible();
-  await petTypesPage.clickEditButtonByPetType('rabbit');
-  await editPetTypePage.nameInput.clear();
-  await editPetTypePage.nameInput.fill('cat');
-  await editPetTypePage.updateButton.click();
-  const rowWithCat = petTypesPage.page.locator('tbody tr', { hasText: 'cat' });
-  await expect(rowWithCat).toBeVisible();
+  await page.getByRole('row', { name: 'cat' }).getByRole('button', { name: 'Edit' }).click();
+  await expect(page.getByRole('heading')).toHaveText('Edit Pet Type');
+  await expect (page.getByRole('textbox')).toHaveValue('cat');
+  await page.getByRole('textbox').fill('rabbit');
+  await page.getByRole('button', { name: 'Update' }).click();
+  await expect (page.getByRole('textbox').first()).toHaveValue('rabbit');
+  await page.getByRole('row', { name: 'rabbit' }).getByRole('button', { name: 'Edit' }).click();
+  await expect (page.getByRole('textbox')).toHaveValue('rabbit');
+  await page.getByRole('textbox').fill('cat');
+  await page.getByRole('button', { name: 'Update' }).click();
+  await expect (page.getByRole('textbox').first()).toHaveValue('cat');
 });
 
 test('Cancel pet type update', async ({page}) => {
-  const petTypesPage = new PetTypesPage(page);
-  const editPetTypePage = new EditPetTypePage(page);
-  await petTypesPage.clickEditButtonByPetType('dog');
-  await editPetTypePage.nameInput.clear();
-  await editPetTypePage.nameInput.fill('moose');
-  await expect(editPetTypePage.nameInput).toHaveValue('moose');
-  await editPetTypePage.cancelButton.click();
-  const rowWithDog = petTypesPage.rows.filter({ hasText: 'dog' });
-  const count = await rowWithDog.count();
-  expect(count).toBe(1);
-
+  await page.getByRole('row', { name: 'dog' }).getByRole('button', { name: 'Edit' }).click();
+  await expect (page.getByRole('textbox')).toHaveValue('dog');
+  await page.getByRole('textbox').fill('moose');
+  await expect (page.getByRole('textbox')).toHaveValue('moose');
+  await page.getByRole('button', { name: 'Cancel' }).click();
+  await expect(page.getByRole('heading')).toHaveText('Pet Types');
+  await expect(page.getByRole('row', { name: 'dog' })).toBeVisible();
 });
 
 test('Validation of Pet type name is required', async ({page}) => {
-  const petTypesPage = new PetTypesPage(page);
-  const editPetTypePage = new EditPetTypePage(page);
-  await petTypesPage.clickEditButtonByPetType('lizard');
-  await editPetTypePage.nameInput.clear(); 
-  await expect(editPetTypePage.nameInputValidationMessage).toBeVisible();
-  await editPetTypePage.updateButton.click();
-  await expect(editPetTypePage.heading).toBeVisible();
-  await editPetTypePage.cancelButton.click();
-  await expect(petTypesPage.heading).toBeVisible();
+  await page.getByRole('row', { name: 'lizard' }).getByRole('button', { name: 'Edit' }).click();
+  await expect (page.getByRole('textbox')).toHaveValue('lizard');
+  await (page.getByRole('textbox')).clear();
+  await expect(page.getByRole('textbox').locator('..')).toContainText('Name is required');
+  await page.getByRole('button', { name: 'Update' }).click();
+  await expect(page.getByRole('heading')).toHaveText('Edit Pet Type');
+  await page.getByRole('button', { name: 'Cancel' }).click();
+  await expect(page.getByRole('heading')).toHaveText('Pet Types');
 });
 
