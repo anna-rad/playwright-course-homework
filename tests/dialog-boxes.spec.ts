@@ -7,7 +7,7 @@ test('Add and delete pet type', async ({page}) => {
   await page.getByRole('button', { name: 'Add' }).click();
   await expect(page.locator('app-pettype-add').getByRole('heading')).toHaveText('New Pet Type');
   await expect(page.locator('#name')).toBeVisible();
-  await expect(page.locator('form').locator('label:has-text("Name")')).toBeVisible();
+  await expect(page.locator('label', { hasText: 'Name' })).toBeVisible();
   await page.locator('#name').fill('pig');
   await page.getByRole('button', { name: 'Save' }).click();
   await expect(page.locator('table tr').last().locator('input')).toHaveValue('pig');
