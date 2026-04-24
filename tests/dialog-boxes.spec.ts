@@ -16,5 +16,6 @@ test('Add and delete pet type', async ({page}) => {
     await dialog.accept();
   });
   await page.locator('table td').last().getByRole('button', { name: 'Delete' }).click();
+  await page.waitForResponse(response => response.url().includes('/pettypes'));
   await expect(page.locator('table tr').last().locator('input')).not.toHaveValue('pig');
 });
