@@ -8,37 +8,33 @@ test.describe('Tests for Owners table', () => {
   });
 
  test('Validate the pet name city of the owner', async ({page}) => {
-   const rowMrBlack = await page.getByRole('row', { name: 'Jeff Black' });
+   const rowMrBlack = page.getByRole('row', { name: 'Jeff Black' });
    await expect(rowMrBlack.getByRole('cell').nth(2)).toHaveText('Monona');
  });
   
  test('Validate owners count of the Madison city', async ({page}) => {
-   const cityMadisonCells = page.locator('td', { hasText: 'Madison' });
-   await expect(cityMadisonCells).toHaveCount(4);
+   await expect(page.getByRole('row', { name: 'Madison' })).toHaveCount(4);
  });
  
  test('Validate search by last name', async ({page}) => {
-   await page.locator('input[name="lastName"]').fill('Black');
-   await page.getByRole('button', { name: 'Find Owner' }).click();
-   await expect(page.getByRole('row').nth(1).getByRole('cell').nth(0)).toHaveText(/\bBlack$/);
-   await page.locator('input[name="lastName"]').fill('Davis');
-   await page.getByRole('button', { name: 'Find Owner' }).click();
-   const searchResultNameCells = page.getByRole('row').getByRole('cell').nth(0);
-   for (const searchResultName of await searchResultNameCells.all()) {
-     await expect(searchResultName).toHaveText(/\bDavis$/)
-   }
-   await page.locator('input[name="lastName"]').fill('Es');
-   await page.getByRole('button', { name: 'Find Owner' }).click();
-   for (const searchResultName of await searchResultNameCells.all()) {
-     await expect(searchResultName).toContainText(/\bEs\w*$/);
-   }
-   await page.locator('input[name="lastName"]').fill('Playwright');
-   await page.getByRole('button', { name: 'Find Owner' }).click();
-   await expect(page.getByText('No owners with LastName starting with "Playwright"')).toBeVisible();
+   const searchKeywords = ['Black', 'Davis', 'Es', 'Playwright'];
+   for (let searchKeyword of searchKeywords) {
+     await page.locator('input[name="lastName"]').fill(searchKeyword);
+     await page.getByRole('button', { name: 'Find Owner' }).click();
+
+     if (searchKeyword == 'Playwright') {
+        await expect(page.getByText('No owners with LastName starting with "Playwright"')).toBeVisible();
+     } else {
+        const searchResultNameCells = page.getByRole('row').getByRole('cell').nth(0);
+        for (const searchResultName of await searchResultNameCells.all()) {
+        await expect(searchResultName).toContainText(new RegExp(`\\b${searchKeyword}.*$`, "i"));
+       }
+     }
+    }
  });
 
  test('Validate phone number and pet name on the Owner Information page', async ({page}) => {
-   const rowByPhone = await page.getByRole('row', { name: '6085552765' });
+   const rowByPhone = page.getByRole('row', { name: '6085552765' });
    const petName = await rowByPhone.getByRole('cell').nth(4).textContent();
    await rowByPhone.getByRole('link').click();
    await expect(page.locator('app-owner-detail').getByRole('row', { name: 'Telephone' })).toContainText('6085552765');
@@ -47,11 +43,10 @@ test.describe('Tests for Owners table', () => {
 
  test('Validate pets of the Madison city', async ({ page }) => {
    const listOfPets: string[] = [];
-   const cityMadisonCell = page.locator('td', { hasText: 'Madison' });
-   await cityMadisonCell.first().waitFor({ state: 'visible' });
-   const rowsByCity = page.locator('tr', { has: cityMadisonCell });
-   for (const row of await rowsByCity.all()) {
-     const petName = await row.locator('td').nth(4).textContent();
+   const madisonRows = page.getByRole('row', { name: 'Madison' });
+   await madisonRows.first().waitFor({ state: 'visible' });
+   for (const madisonRow of await madisonRows.all()) {
+     const petName = await madisonRow.getByRole('cell').nth(4).textContent();
      if (petName) {
        listOfPets.push(petName.trim());
      }
@@ -105,7 +100,7 @@ test('Validate specialty lists', async ({page}) => {
   await page.locator('.dropdown-arrow').click();
   const specialtiesdDropdownOptions = await page.locator('.dropdown-content label').allTextContents();
   expect(specialtiesdDropdownOptions.sort()).toEqual(allSpecialties.sort());
-  await page.getByLabel('oncology').check();
+  await page.getByRole('checkbox', {name: 'oncology'}).check();
   await page.locator('.dropdown-arrow').click();
   await page.getByRole('button', { name: 'Save Vet' }).click();
   await expect(page.getByRole('row', { name: 'Sharon Jenkins' }).getByRole('cell').nth(1)).toContainText('oncology');
