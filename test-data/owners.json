@@ -1,0 +1,160 @@
+[
+  {
+    "firstName": "Kateryna",
+    "lastName": "Chystyakova",
+    "address": "Horodotska street, 24",
+    "city": "Lviv",
+    "telephone": "3948573884",
+    "id": 2012,
+    "pets": [
+      {
+        "name": "Philip",
+        "birthDate": "2020-11-07",
+        "type": {
+          "name": "cat",
+          "id": 2449
+        },
+        "id": 3121,
+        "ownerId": 2012,
+        "visits": [
+          {
+            "date": "2026-03-04",
+            "description": "vaccination",
+            "id": 5289,
+            "petId": 3121
+          },
+          {
+            "date": "2026-02-20",
+            "description": "planned check-up",
+            "id": 5290,
+            "petId": 3121
+          },
+          {
+            "date": "2026-01-15",
+            "description": "dental cleaning",
+            "id": 5291,
+            "petId": 3121
+          },
+          {
+            "date": "2025-12-10",
+            "description": "surgery",
+            "id": 5292,
+            "petId": 3121
+          },
+          {
+            "date": "2025-11-05",
+            "description": "emergency visit",
+            "id": 5293,
+            "petId": 3121
+          },
+          {
+            "date": "2025-10-01",
+            "description": "wellness exam",
+            "id": 5294,
+            "petId": 3121
+          },
+          {
+            "date": "2024-09-15",
+            "description": "vaccination",
+            "id": 5295,
+            "petId": 3121
+          },
+          {
+            "date": "2024-08-10",
+            "description": "planned check-up",
+            "id": 5296,
+            "petId": 3121
+          },
+          {
+            "date": "2024-07-05",
+            "description": "dental cleaning",
+            "id": 5297,
+            "petId": 3121
+          },
+          {
+            "date": "2023-06-01",
+            "description": "planned check-up",
+            "id": 5298,
+            "petId": 3121
+          }
+        ]
+      },
+      {
+        "name": "Alex",
+        "birthDate": "2018-09-14",
+        "type": {
+          "name": "cat",
+          "id": 2449
+        },
+        "id": 3122,
+        "ownerId": 2012,
+        "visits": []
+      }
+    ]
+  },
+  {
+    "firstName": "Melania",
+    "lastName": "Rakitska",
+    "address": "Kioto street, 12",
+    "city": "Kyiv",
+    "telephone": "8764534118",
+    "id": 2013,
+    "pets": [
+      {
+        "name": "Charlie",
+        "birthDate": "2002-01-06",
+        "type": {
+          "name": "dog",
+          "id": 2450
+        },
+        "id": 3123,
+        "ownerId": 2013,
+        "visits": []
+      },
+      {
+        "name": "Molly",
+        "birthDate": "2015-05-20",
+        "type": {
+          "name": "dog",
+          "id": 2450
+        },
+        "id": 3124,
+        "ownerId": 2013,
+        "visits": []
+      },
+      {
+        "name": "Daisy",
+        "birthDate": "2017-08-30",
+        "type": {
+          "name": "dog",
+          "id": 2450
+        },
+        "id": 3125,
+        "ownerId": 2013,
+        "visits": []
+      },
+      {
+        "name": "Lucy",
+        "birthDate": "2019-12-11",
+        "type": {
+          "name": "cat",
+          "id": 2449
+        },
+        "id": 3126,
+        "ownerId": 2013,
+        "visits": []
+      },
+      {
+        "name": "Lola",
+        "birthDate": "2021-03-15",
+        "type": {
+          "name": "cat",
+          "id": 2449
+        },
+        "id": 3127,
+        "ownerId": 2013,
+        "visits": []
+      }
+    ]
+  }
+]
