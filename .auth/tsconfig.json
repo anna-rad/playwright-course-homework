@@ -1,6 +1,7 @@
 {
     "compileOnSave": true,
     "compilerOptions": {
+        "ignoreDeprecations": "6.0",
         "resolveJsonModule": true,
         "esModuleInterop": true,
         "moduleResolution": "node"

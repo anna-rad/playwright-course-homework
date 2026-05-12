@@ -1,0 +1,93 @@
+{
+  "firstName": "Kateryna",
+  "lastName": "Chystyakova",
+  "address": "Horodotska street, 24",
+  "city": "Lviv",
+  "telephone": "3948573884",
+  "id": 2012,
+  "pets": [
+    {
+      "name": "Philip",
+      "birthDate": "2020-11-07",
+      "type": {
+        "name": "cat",
+        "id": 2449
+      },
+      "id": 3121,
+      "ownerId": 2012,
+      "visits": [
+        {
+          "date": "2026-03-04",
+          "description": "vaccination",
+          "id": 5289,
+          "petId": 3121
+        },
+        {
+          "date": "2026-02-20",
+          "description": "planned check-up",
+          "id": 5290,
+          "petId": 3121
+        },
+        {
+          "date": "2026-01-15",
+          "description": "dental cleaning",
+          "id": 5291,
+          "petId": 3121
+        },
+        {
+          "date": "2025-12-10",
+          "description": "surgery",
+          "id": 5292,
+          "petId": 3121
+        },
+        {
+          "date": "2025-11-05",
+          "description": "emergency visit",
+          "id": 5293,
+          "petId": 3121
+        },
+        {
+          "date": "2025-10-01",
+          "description": "wellness exam",
+          "id": 5294,
+          "petId": 3121
+        },
+        {
+          "date": "2024-09-15",
+          "description": "vaccination",
+          "id": 5295,
+          "petId": 3121
+        },
+        {
+          "date": "2024-08-10",
+          "description": "planned check-up",
+          "id": 5296,
+          "petId": 3121
+        },
+        {
+          "date": "2024-07-05",
+          "description": "dental cleaning",
+          "id": 5297,
+          "petId": 3121
+        },
+        {
+          "date": "2023-06-01",
+          "description": "planned check-up",
+          "id": 5298,
+          "petId": 3121
+        }
+      ]
+    },
+    {
+      "name": "Alex",
+      "birthDate": "2018-09-14",
+      "type": {
+        "name": "cat",
+        "id": 2449
+      },
+      "id": 3122,
+      "ownerId": 2012,
+      "visits": []
+    }
+  ]
+}
