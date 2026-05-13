@@ -60,7 +60,10 @@ test('Validate specialties list for veterinarian', async ({ page }) => {
     await page.route('*/**/api/vets', async route => {
         const vetsResponse = await route.fetch();
         const vetsResponseBody = await vetsResponse.json();
-        vetsResponseBody[5].specialties = specialtiesList;
+        const vetSharonJenkins = vetsResponseBody.find((v: { firstName: string; lastName: string }) =>
+            v.firstName === "Sharon" && v.lastName === "Jenkins"
+        );
+        if (vetSharonJenkins) vetSharonJenkins.specialties = specialtiesList;
         await route.fulfill({
             body: JSON.stringify(vetsResponseBody)
         });
