@@ -19,7 +19,6 @@ test('Validate owners list and visit list count', async ({ page }) => {
     await page.getByRole('button', { name: 'OWNERS' }).click();
     await page.getByRole('link', { name: 'Search' }).click();
     const ownerTable = page.locator('#ownersTable');
-    const ownerRows = ownerTable.getByRole('row');
     const ownerKateryna = ownerTable.getByRole('row', { name: 'Kateryna Chystyakova' });
     const ownerMelania = ownerTable.getByRole('row', { name: 'Melania Rakitska' });
     await expect(page.locator('#ownersTable tbody > tr')).toHaveCount(2);
@@ -42,4 +41,38 @@ test('Validate owners list and visit list count', async ({ page }) => {
     }
     const visitList = page.locator('app-pet-list').getByRole('row').first().locator('app-visit-list table > tr');
     await expect(visitList).toHaveCount(10);
+});
+
+test('Validate specialties list for veterinarian', async ({ page }) => {
+    const specialtiesList = [
+        { id: 1, name: 'radiology' },
+        { id: 2, name: 'surgery' },
+        { id: 3, name: 'dentistry' },
+        { id: 4, name: 'nutrition' },
+        { id: 5, name: 'dermatology' },
+        { id: 6, name: 'ophthalmology' },
+        { id: 7, name: 'cardiology' },
+        { id: 8, name: 'neurology' },
+        { id: 9, name: 'oncology' },
+        { id: 10, name: 'immunology' }
+    ];
+
+    await page.route('*/**/api/vets', async route => {
+        const vetsResponse = await route.fetch();
+        const vetsResponseBody = await vetsResponse.json();
+        const vetSharonJenkins = vetsResponseBody.find((v: { firstName: string; lastName: string }) =>
+            v.firstName === "Sharon" && v.lastName === "Jenkins"
+        );
+        if (vetSharonJenkins) vetSharonJenkins.specialties = specialtiesList;
+        await route.fulfill({
+            body: JSON.stringify(vetsResponseBody)
+        });
+    });
+    await page.goto('/');
+    await page.getByRole('button', { name: 'VETERINARIANS' }).click();
+    await page.getByRole('link', { name: 'All' }).click();
+    const vetSharon = page.getByRole('row', { name: 'Sharon Jenkins' });
+    await expect(vetSharon).toBeVisible();
+    const vetSharonSpecialties = (await vetSharon.getByRole('cell').nth(1).locator('div').allTextContents()).map(s => s.trim());
+    expect(vetSharonSpecialties).toEqual(specialtiesList.map(s => s.name));
 });
