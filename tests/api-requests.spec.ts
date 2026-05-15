@@ -27,9 +27,10 @@ test('Add and delete veterinarian', async ({ page, request }) => {
             specialties: []
         }
     });
-    const vetId = (await newVetResponse.json()).id;
+    const newVetResponseJson = await newVetResponse.json();
+    const vetId = newVetResponseJson.id;
     expect(newVetResponse.status()).toBe(201);
-    expect((await newVetResponse.json()).firstName).toBe(vetFirstName);
+    expect(newVetResponseJson.firstName).toBe(vetFirstName);
 
     await page.goto('/');
     await page.getByRole('button', { name: 'VETERINARIANS' }).click();
@@ -65,6 +66,9 @@ test('New specialty is displayed', async ({ page, request }) => {
 
     const firstName = "John";
     const lastName = "Doe";
+    const specialtiesListResponse = await request.get('https://petclinic-api.bondaracademy.com/petclinic/api/specialties');
+    const specialtiesListJson = await specialtiesListResponse.json();
+    const surgerySpecialtyId = specialtiesListJson.find((item: { name: string }) => item.name === 'surgery').id;
     const newVetResponse = await request.post('https://petclinic-api.bondaracademy.com/petclinic/api/vets', {
         data: {
             firstName: firstName,
@@ -72,7 +76,7 @@ test('New specialty is displayed', async ({ page, request }) => {
             id: null,
             specialties: [
                 {
-                    id: 4259,
+                    id: surgerySpecialtyId,
                     name: "surgery"
                 }
             ]
@@ -92,6 +96,7 @@ test('New specialty is displayed', async ({ page, request }) => {
     await page.getByRole('checkbox', { name: 'surgery' }).uncheck();
     await page.locator('.dropdown-display').click();
     await page.getByRole('button', { name: 'Save Vet' }).click();
+    await expect(newVetRow.getByRole('cell').nth(1)).toHaveText('api testing ninja');
 
     const deleteVetResponse = await request.delete(`https://petclinic-api.bondaracademy.com/petclinic/api/vets/${vetId}`);
     expect(deleteVetResponse.status()).toBe(204);
@@ -100,5 +105,6 @@ test('New specialty is displayed', async ({ page, request }) => {
     expect(deleteSpecialtyResponse.status()).toBe(204);
 
     await page.getByRole('link', { name: 'SPECIALTIES' }).click();
+    await page.waitForResponse('**/api/specialties');
     await expect(page.getByRole('row', { name: 'api testing ninja' })).not.toBeVisible();
 });
