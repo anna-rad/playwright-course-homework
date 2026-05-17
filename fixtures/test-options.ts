@@ -70,5 +70,8 @@ export const test = base.extend<TestOptions>({
             }
         })
         await use({ ownerFirstName, ownerLastName, petName, visitDescription })
+
+        //teardown: deleting owner
+        await request.delete(`https://petclinic-api.bondaracademy.com/petclinic/api/owners/${newOwnerId}`)
     }
 })
