@@ -1,0 +1,12 @@
+version: '5.1'
+services:
+  playwright-test:
+    image: playwright-test
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: npm run tests-chrome
+    volumes:
+      - ./playwright-report/:/app/playwright-report
+      - ./test-results/:/app/test-results
+
